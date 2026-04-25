@@ -10,64 +10,107 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <style>
-        :root { --militaire: #1b5e20; --militaire-dark: #0a2e0a; --rouge: #b71c1c; --or: #ffd700; --blanc: #ffffff; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+        :root { 
+            --militaire: #1b5e20; 
+            --militaire-dark: #0a2e0a; 
+            --rouge: #b71c1c; 
+            --or: #ffd700; 
+            --blanc: #ffffff; 
+            --shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body { 
-            font-family: 'Segoe UI', sans-serif; 
+            font-family: 'Segoe UI', Roboto, sans-serif; 
             margin: 0; 
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); 
             min-height: 100vh; 
             padding-bottom: 80px; 
             overflow-x: hidden; 
+            color: #333;
         }
 
         #particles-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
         
-        header { position: relative; z-index: 10; background: linear-gradient(135deg, rgba(27, 94, 32, 0.95), rgba(10, 46, 10, 0.95)); color: white; text-align: center; padding: 25px 20px; border-bottom: 4px solid var(--or); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
-        .app-icon { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--or); object-fit: cover; background-color: var(--blanc); }
+        header { 
+            position: relative; z-index: 10; 
+            background: linear-gradient(135deg, rgba(27, 94, 32, 0.95), rgba(10, 46, 10, 0.95)); 
+            color: white; text-align: center; padding: 20px; 
+            border-bottom: 4px solid var(--or); box-shadow: var(--shadow); 
+        }
+
+        .app-icon { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--or); object-fit: cover; background: white; }
         
-        .container { position: relative; z-index: 10; padding: 20px; max-width: 800px; margin: auto; }
-        .page { display: none; animation: fadeInUp 0.5s ease; }
+        .container { position: relative; z-index: 10; padding: 15px; max-width: 600px; margin: auto; }
+        
+        .page { display: none; animation: fadeInUp 0.4s ease-out; }
         .active { display: block; }
-        
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        .card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); margin-bottom: 20px; }
-        
-        .btn { 
-            width: 100%; padding: 16px; border: none; border-radius: 14px; font-weight: bold; 
-            cursor: pointer; font-size: 15px; margin-top: 12px; transition: all 0.3s; 
-            display: flex; align-items: center; justify-content: center; gap: 10px;
+        .card { 
+            background: rgba(255, 255, 255, 0.98); 
+            padding: 20px; border-radius: 18px; 
+            box-shadow: var(--shadow); margin-bottom: 20px; 
+            border: 1px solid rgba(255,255,255,0.2);
         }
-        .btn:active { transform: scale(0.96); }
+        
+        h2, h3, h4 { margin-top: 0; color: var(--militaire-dark); }
+
+        .btn { 
+            width: 100%; padding: 15px; border: none; border-radius: 12px; 
+            font-weight: bold; cursor: pointer; font-size: 14px; margin-top: 10px; 
+            transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn:active { transform: scale(0.97); }
         .btn-mil { background: linear-gradient(135deg, var(--militaire), var(--militaire-dark)); color: white; }
-        .btn-dark { background: #333; color: white; }
+        .btn-dark { background: #2c3e50; color: white; }
         .btn-danger { background: var(--rouge); color: white; }
         .btn-or { background: var(--or); color: var(--militaire-dark); }
         
-        input, select { width: 100%; padding: 14px; margin: 10px 0; border: 2px solid #e0e0e0; border-radius: 12px; outline: none; font-size: 16px; }
-        input:focus { border-color: var(--militaire); }
+        input, select, textarea { 
+            width: 100%; padding: 12px; margin: 8px 0; 
+            border: 2px solid #ddd; border-radius: 10px; 
+            outline: none; font-size: 16px; transition: 0.3s;
+            font-family: inherit;
+        }
+        input:focus, textarea:focus { border-color: var(--militaire); }
 
-        .table-scroll { overflow-x: auto; border-radius: 12px; margin-top: 15px; }
-        table { width: 100%; border-collapse: collapse; background: white; min-width: 600px; }
-        th, td { border: 1px solid #eee; padding: 12px; text-align: center; font-size: 0.85em; }
+        .table-scroll { overflow-x: auto; border-radius: 10px; border: 1px solid #ddd; }
+        table { width: 100%; border-collapse: collapse; background: white; min-width: 500px; }
+        th, td { border: 1px solid #eee; padding: 10px; text-align: center; font-size: 12px; }
         th { background: var(--militaire); color: white; }
         
-        .paid-cell { background: #c8e6c9 !important; color: #1b5e20; font-weight: bold; cursor: pointer; }
-        .unpaid-cell { color: #b71c1c; cursor: pointer; font-weight: bold; background: #ffebee !important; }
+        .paid-cell { background: #e8f5e9 !important; color: #2e7d32; font-weight: bold; cursor: pointer; }
+        .unpaid-cell { background: #ffebee !important; color: #c62828; font-weight: bold; cursor: pointer; }
 
-        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 15px; }
-        .grid-item { background: white; padding: 20px; text-align: center; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 1px solid #ddd; }
-        .grid-item i { font-size: 1.5em; color: var(--militaire); margin-bottom: 8px; display: block; }
+        .admin-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .grid-item { 
+            background: white; padding: 15px; text-align: center; 
+            border-radius: 12px; cursor: pointer; border: 1px solid #eee;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .grid-item i { font-size: 1.8em; color: var(--militaire); margin-bottom: 5px; display: block; }
         
-        .messenger-body { height: 250px; overflow-y: auto; background: #f0f2f5; padding: 15px; border-radius: 10px; display: flex; flex-direction: column; border: 1px solid #ddd; }
-        .msg { max-width: 80%; padding: 10px; border-radius: 15px; margin-bottom: 10px; font-size: 0.9em; }
-        .msg-sent { align-self: flex-end; background: var(--militaire); color: white; }
-        .msg-received { align-self: flex-start; background: #e4e6eb; color: black; }
+        .messenger-body { 
+            height: 250px; overflow-y: auto; background: #f8f9fa; 
+            padding: 10px; border-radius: 10px; display: flex; 
+            flex-direction: column; border: 1px solid #eee; margin-bottom: 10px;
+        }
+        .msg { max-width: 85%; padding: 10px; border-radius: 12px; margin-bottom: 8px; font-size: 13px; line-height: 1.4; }
+        .msg-sent { align-self: flex-end; background: var(--militaire); color: white; border-bottom-right-radius: 2px; }
+        .msg-received { align-self: flex-start; background: #e9ecef; color: #333; border-bottom-left-radius: 2px; }
 
-        .toast { position: fixed; top: 20px; right: 20px; padding: 15px 25px; background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 10000; border-left: 5px solid var(--militaire); }
-        footer { position: fixed; bottom: 0; width: 100%; background: #000; color: #fff; text-align: center; padding: 15px; font-size: 0.8em; z-index: 100; }
+        .toast { 
+            position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); 
+            padding: 12px 20px; background: #333; color: white; 
+            border-radius: 25px; z-index: 10000; font-size: 13px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        
+        footer { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.9); color: #fff; text-align: center; padding: 12px; font-size: 10px; z-index: 100; border-top: 1px solid var(--or); }
+
+        .co-admin-list { margin-top: 10px; background: #f9f9f9; border-radius: 8px; padding: 10px; }
+        .co-admin-item { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #eee; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -75,32 +118,29 @@
 <canvas id="particles-canvas"></canvas>
 
 <header>
-    <img src="1000058278.png" class="app-icon" alt="Logo">
-    <div style="font-weight:900; margin-top:10px; font-size: 1.2em;">MUTUELLE LES PARAS COMMANDOS</div>
-    <div style="font-size:10px; color:var(--or); letter-spacing: 2px;">FIDÉLITÉ - HONNEUR - SOLIDARITÉ</div>
+    <img src="1000058278.png" class="app-icon" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1069/1069102.png'">
+    <div style="font-weight:900; margin-top:8px; font-size: 1.1em; letter-spacing: 1px;">MUTUELLE LES PARAS COMMANDOS</div>
+    <div style="font-size:9px; color:var(--or); letter-spacing: 2px; font-weight: bold;">FIDÉLITÉ - HONNEUR - SOLIDARITÉ</div>
 </header>
 
 <div class="container">
     <div id="home" class="page active">
         <div class="card" style="text-align: center;">
-            <i class="fas fa-parachute-box" style="font-size: 3em; color: var(--militaire);"></i>
+            <i class="fas fa-parachute-box" style="font-size: 3.5em; color: var(--militaire); margin-bottom: 15px;"></i>
             <h2>Espace Membre</h2>
             <button class="btn btn-mil" onclick="showPage('page-login')"><i class="fas fa-sign-in-alt"></i> CONNEXION</button>
             <button class="btn btn-dark" onclick="showPage('page-inscription')"><i class="fas fa-user-plus"></i> INSCRIPTION</button>
-            <button class="btn btn-or" onclick="showPage('page-reglement')"><i class="fas fa-book"></i> RÈGLEMENT INTÉRIEUR</button>
-            <hr style="margin: 20px 0; opacity: 0.2;">
-            <button class="btn" style="color:var(--rouge); background: #ffeeee; border: 1px solid var(--rouge);" onclick="showPage('login-admin')"><i class="fas fa-lock"></i> ACCÈS ADMIN</button>
+            <button class="btn btn-or" onclick="showPage('page-reglement')"><i class="fas fa-book"></i> RÈGLEMENT</button>
+            <hr style="margin: 20px 0; opacity: 0.1;">
+            <button class="btn" style="color:var(--rouge); background: #ffeeee;" onclick="showPage('login-admin')"><i class="fas fa-lock"></i> ADMINISTRATION</button>
         </div>
     </div>
 
     <div id="page-reglement" class="page">
         <div class="card">
             <h3><i class="fas fa-gavel"></i> Règlement Intérieur</h3>
-            <div style="max-height: 350px; overflow-y: auto; font-size: 14px; line-height: 1.6; color: #333; padding-right: 10px;">
-                <p><strong>Article 1:</strong> La mutuelle a pour but de renforcer les liens de solidarité entre les membres Paras Commandos.</p>
-                <p><strong>Article 2:</strong> La cotisation mensuelle est fixée à <strong>3000 FCFA</strong>, payable avant le 10 de chaque mois.</p>
-                <p><strong>Article 3:</strong> Les fonds récoltés sont destinés aux aides sociales (mariages, naissances, décès) et aux projets de développement de la mutuelle.</p>
-                <p><strong>Article 4:</strong> Tout membre a droit de consulter l'état de la caisse via son tableau de bord.</p>
+            <div id="display-reglement" style="max-height: 350px; overflow-y: auto; font-size: 14px; color: #444; padding-right: 10px; text-align: justify; white-space: pre-wrap; line-height: 1.6;">
+                Chargement du règlement...
             </div>
             <button class="btn btn-dark" onclick="showPage('home')">RETOUR</button>
         </div>
@@ -108,11 +148,11 @@
 
     <div id="page-inscription" class="page">
         <div class="card">
-            <h3><i class="fas fa-user-plus"></i> Nouveau Membre</h3>
+            <h3><i class="fas fa-user-plus"></i> Inscription</h3>
             <input type="text" id="reg-nom" placeholder="Nom Complet">
             <input type="tel" id="reg-tel" placeholder="N° Téléphone">
             <input type="password" id="reg-pass" placeholder="Mot de passe">
-            <button class="btn btn-mil" onclick="handleInscription()">VALIDER</button>
+            <button class="btn btn-mil" onclick="handleInscription()">CRÉER MON COMPTE</button>
             <button class="btn btn-dark" onclick="showPage('home')">RETOUR</button>
         </div>
     </div>
@@ -120,28 +160,28 @@
     <div id="page-login" class="page">
         <div class="card">
             <h3><i class="fas fa-user-shield"></i> Connexion</h3>
-            <input type="tel" id="login-tel" placeholder="Téléphone">
+            <input type="tel" id="login-tel" placeholder="N° Téléphone">
             <input type="password" id="login-pass" placeholder="Mot de passe">
-            <button class="btn btn-mil" onclick="handleLogin()">ENTRER</button>
+            <button class="btn btn-mil" onclick="handleLogin()">ACCÉDER</button>
             <button class="btn btn-dark" onclick="showPage('home')">RETOUR</button>
         </div>
     </div>
 
     <div id="dashboard-client" class="page">
         <div class="card" style="background: var(--militaire); color: white;">
-            <h2 id="client-welcome" style="margin:0;"></h2>
-            <p>Année 2026 - Suivi des Cotisations</p>
+            <h2 id="client-welcome" style="color:white; margin-bottom:5px;"></h2>
+            <p style="margin:0; opacity: 0.9; font-size: 14px;">Année 2026 - Tableau de bord</p>
         </div>
         <div class="card">
-            <h4><i class="fas fa-calendar-check"></i> Mes Paiements (3000 FCFA/mois)</h4>
+            <h4><i class="fas fa-calendar-check"></i> Mes Cotisations</h4>
             <div class="table-scroll"><table id="client-table-suivi"></table></div>
         </div>
         <div class="card">
-            <h4><i class="fas fa-comments"></i> Messagerie Admin</h4>
+            <h4><i class="fas fa-comments"></i> Messagerie</h4>
             <div class="messenger-body" id="client-messenger-body"></div>
-            <div style="display:flex; gap:5px; margin-top:10px;">
+            <div style="display:flex; gap:5px;">
                 <input type="text" id="client-msg-input" placeholder="Message..." style="margin:0">
-                <button class="btn btn-mil" style="width:60px; margin:0" onclick="sendMessage('client')"><i class="fas fa-paper-plane"></i></button>
+                <button class="btn btn-mil" style="width:50px; margin:0" onclick="sendMessage('client')"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
         <button class="btn btn-danger" onclick="logout()">DÉCONNEXION</button>
@@ -149,8 +189,8 @@
 
     <div id="login-admin" class="page">
         <div class="card">
-            <h3><i class="fas fa-shield-alt"></i> Code Admin</h3>
-            <input type="password" id="admin-pass-input" placeholder="Code Secret">
+            <h3><i class="fas fa-shield-alt"></i> Accès Restreint</h3>
+            <input type="password" id="admin-pass-input" placeholder="Code Secret Admin">
             <button class="btn btn-mil" onclick="checkAdmin()">DÉVERROUILLER</button>
             <button class="btn btn-dark" onclick="showPage('home')">RETOUR</button>
         </div>
@@ -158,56 +198,43 @@
 
     <div id="dashboard-admin" class="page">
         <div class="card" style="background: #0a2e0a; color: var(--or); text-align: center; border: 2px solid var(--or);">
-            <p style="margin:0;">SOLDE ACTUEL EN CAISSE</p>
-            <h1 id="admin-solde-caisse">0 FCFA</h1>
+            <p style="margin:0; font-size: 12px; font-weight: bold;">SOLDE GÉNÉRAL EN CAISSE</p>
+            <h1 id="admin-solde-caisse" style="margin:10px 0;">0 FCFA</h1>
         </div>
         <div class="admin-grid">
-            <div class="grid-item" onclick="showPage('admin-suivi-annuel'); renderSuiviAnnuel();"><i class="fas fa-table"></i>REGISTRE</div>
-            <div class="grid-item" onclick="showPage('admin-mouvements'); renderMouvements();"><i class="fas fa-exchange-alt"></i>SORTIES</div>
+            <div class="grid-item" onclick="showPage('admin-suivi-annuel'); renderSuiviAnnuel();"><i class="fas fa-users"></i>REGISTRE</div>
+            <div class="grid-item" onclick="showPage('admin-mouvements'); renderMouvements();"><i class="fas fa-minus-circle"></i>DÉPENSES</div>
             <div class="grid-item" onclick="showPage('admin-boite'); renderAdminMessages();"><i class="fas fa-envelope"></i>MESSAGES</div>
-            <div class="grid-item" onclick="showPage('admin-settings')"><i class="fas fa-cog"></i>PARAMS</div>
-            <div class="grid-item" onclick="exporterDonnees()"><i class="fas fa-file-export"></i>EXPORT</div>
+            <div class="grid-item" onclick="showPage('admin-settings'); renderCoAdminList();"><i class="fas fa-cog"></i>PARAMS</div>
+            <div class="grid-item" onclick="exporterDonnees()"><i class="fas fa-download"></i>BACKUP</div>
             <div class="grid-item" onclick="logout()" style="color:var(--rouge)"><i class="fas fa-power-off"></i>QUITTER</div>
-        </div>
-    </div>
-
-    <div id="admin-settings" class="page">
-        <div class="card">
-            <h3><i class="fas fa-tools"></i> Paramètres Avancés</h3>
-            <label>CHANGER LE CODE ADMIN</label>
-            <input type="password" id="new-admin-code" placeholder="Nouveau code">
-            <button class="btn btn-danger" onclick="changeAdminCode()">METTRE À JOUR LE CODE</button>
-            <hr style="margin:20px 0">
-            <label>AJOUTER UN NUMÉRO CO-ADMIN</label>
-            <input type="tel" id="new-admin-tel" placeholder="Ex: 061234567">
-            <button class="btn btn-mil" onclick="addCoAdmin()">AJOUTER L'ACCÈS</button>
-            <button class="btn btn-dark" onclick="showPage('dashboard-admin')" style="margin-top:20px;">RETOUR</button>
         </div>
     </div>
 
     <div id="admin-suivi-annuel" class="page">
         <div class="card">
-            <h3>Registre Général 2026</h3>
+            <h3><i class="fas fa-list"></i> Registre 2026</h3>
+            <p style="font-size: 11px; color: #666;">Cliquez sur une case pour valider/annuler un paiement.</p>
             <div class="table-scroll"><table id="table-annuelle"></table></div>
-            <button class="btn btn-dark" onclick="showPage('dashboard-admin')">RETOUR</button>
+            <button class="btn btn-dark" onclick="showPage('dashboard-admin')" style="margin-top:15px;">RETOUR</button>
         </div>
     </div>
 
     <div id="admin-mouvements" class="page">
         <div class="card">
-            <h3>Nouvelle Sortie / Dépense</h3>
+            <h3><i class="fas fa-exchange-alt"></i> Gestion des Dépenses</h3>
             <select id="mov-type">
-                <option value="depense">Dépense Fonctionnement</option>
-                <option value="aide">Aide Sociale</option>
-                <option value="emprunt">Prêt accordé</option>
+                <option value="Dépense">Dépense Fonctionnement</option>
+                <option value="Aide">Aide Sociale</option>
+                <option value="Prêt">Prêt accordé</option>
             </select>
-            <input type="text" id="mov-motif" placeholder="Motif / Bénéficiaire">
-            <input type="number" id="mov-montant" placeholder="Montant FCFA">
+            <input type="text" id="mov-motif" placeholder="Motif ou Bénéficiaire">
+            <input type="number" id="mov-montant" placeholder="Montant en FCFA">
             <button class="btn btn-mil" onclick="ajouterMouvement()">ENREGISTRER</button>
         </div>
         <div class="card">
-            <h4>Historique des Sorties</h4>
-            <div id="hist-mouvements" style="font-size: 13px;"></div>
+            <h4>Historique des Dépenses</h4>
+            <div id="hist-mouvements" style="max-height: 200px; overflow-y: auto; font-size: 12px;"></div>
         </div>
         <button class="btn btn-dark" onclick="showPage('dashboard-admin')">RETOUR</button>
     </div>
@@ -216,12 +243,39 @@
         <div class="card">
             <h3>Boîte de Réception</h3>
             <select id="admin-select-client" onchange="renderAdminMessages()"></select>
-            <div class="messenger-body" id="admin-messenger-body" style="margin-top:10px;"></div>
-            <div style="display:flex; gap:5px; margin-top:10px;">
-                <input type="text" id="admin-msg-input" placeholder="Répondre..." style="margin:0">
-                <button class="btn btn-mil" style="width:60px; margin:0" onclick="sendMessage('admin')"><i class="fas fa-reply"></i></button>
+            <div class="messenger-body" id="admin-messenger-body"></div>
+            <div style="display:flex; gap:5px;">
+                <input type="text" id="admin-msg-input" placeholder="Réponse..." style="margin:0">
+                <button class="btn btn-mil" style="width:50px; margin:0" onclick="sendMessage('admin')"><i class="fas fa-reply"></i></button>
             </div>
             <button class="btn btn-dark" onclick="showPage('dashboard-admin')" style="margin-top:15px;">RETOUR</button>
+        </div>
+    </div>
+
+    <div id="admin-settings" class="page">
+        <div class="card">
+            <h3><i class="fas fa-tools"></i> Configuration</h3>
+            
+            <label style="font-size: 12px; font-weight: bold;">NOUVEAU CODE ADMIN PRINCIPAL</label>
+            <input type="password" id="new-admin-code" placeholder="Min. 4 caractères">
+            <button class="btn btn-danger" onclick="changeAdminCode()">CHANGER LE CODE</button>
+            
+            <hr style="margin:20px 0; opacity: 0.2;">
+            
+            <label style="font-size: 12px; font-weight: bold;">AJOUTER CO-ADMIN (N° TEL)</label>
+            <input type="tel" id="new-admin-tel" placeholder="Ex: 061234567">
+            <button class="btn btn-mil" onclick="addCoAdmin()">AJOUTER</button>
+
+            <label style="font-size: 12px; font-weight: bold; margin-top:10px; display:block;">LISTE DES ADMINISTRATEURS</label>
+            <div id="co-admin-list-container" class="co-admin-list"></div>
+
+            <hr style="margin:20px 0; opacity: 0.2;">
+
+            <label style="font-size: 12px; font-weight: bold;"><i class="fas fa-edit"></i> MODIFIER LE RÈGLEMENT INTÉRIEUR</label>
+            <textarea id="edit-reglement-text" rows="8" placeholder="Écrivez le règlement ici..."></textarea>
+            <button class="btn btn-or" onclick="saveReglement()"><i class="fas fa-save"></i> METTRE À JOUR LE RÈGLEMENT</button>
+
+            <button class="btn btn-dark" onclick="showPage('dashboard-admin')" style="margin-top:20px;">RETOUR</button>
         </div>
     </div>
 </div>
@@ -229,69 +283,79 @@
 <footer>DÉVELOPPÉ PAR OLINGOU OBORA ET SOUEKOLO EUDMAR DELBRIAN © 2026</footer>
 
 <script>
-    // --- CONFIGURATION FIREBASE ---
-    const firebaseConfig = {
-        databaseURL: "https://mutuelle-para-commando-default-rtdb.firebaseio.com/" 
-    };
-
+    const firebaseConfig = { databaseURL: "https://mutuelle-para-commando-default-rtdb.firebaseio.com/" };
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
-    // --- INITIALISATION DES VARIABLES ---
-    let db = { membres: [], mouvements: [], messages: [], adminPass: "1234", coAdmins: [] };
+    let db = { 
+        membres: [], 
+        mouvements: [], 
+        messages: [], 
+        adminPass: "1234", 
+        coAdmins: [],
+        reglement: "Article 1: Solidarité...\nArticle 2: Cotisation 3000 FCFA..." 
+    };
     let sessionUser = null;
     const moisNoms = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Août", "Sep", "Oct", "Nov", "Déc"];
 
-    // --- SYNCHRONISATION TEMPS RÉEL ---
-    database.ref('mutuelle_db').on('value', (snapshot) => {
-        const data = snapshot.val();
+    database.ref('mutuelle_db').on('value', (snap) => {
+        const data = snap.val();
         if (data) {
             db.membres = data.membres || [];
             db.mouvements = data.mouvements || [];
             db.messages = data.messages || [];
             db.coAdmins = data.coAdmins || [];
             db.adminPass = data.adminPass || "1234";
+            db.reglement = data.reglement || "Règlement non défini.";
             
+            document.getElementById('display-reglement').innerText = db.reglement;
+            document.getElementById('edit-reglement-text').value = db.reglement;
+
             if(sessionUser) {
-                const updatedUser = db.membres.find(m => m.tel === sessionUser.tel);
-                if(updatedUser) {
-                    sessionUser = updatedUser;
-                    renderClientDashboard();
-                }
+                const updated = db.membres.find(m => m.tel === sessionUser.tel);
+                if(updated) { sessionUser = updated; renderClientDashboard(); }
             }
             if(document.getElementById('admin-suivi-annuel').classList.contains('active')) renderSuiviAnnuel();
-            if(document.getElementById('admin-boite').classList.contains('active')) renderAdminMessages();
+            if(document.getElementById('admin-boite').classList.contains('active')) {
+                renderAdminMessages();
+                updateClientSelector();
+            }
+            if(document.getElementById('admin-settings').classList.contains('active')) renderCoAdminList();
             updateSolde();
         }
     });
 
     function save() { database.ref('mutuelle_db').set(db); }
 
+    function saveReglement() {
+        const newText = document.getElementById('edit-reglement-text').value;
+        db.reglement = newText;
+        save();
+        showToast("Règlement mis à jour avec succès !");
+    }
+
     function showPage(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        const target = document.getElementById(id);
-        if(target) target.classList.add('active');
+        document.getElementById(id).classList.add('active');
         window.scrollTo(0,0);
     }
 
     function showToast(msg) {
         const t = document.createElement('div');
-        t.className = 'toast';
-        t.innerText = msg;
+        t.className = 'toast'; t.innerText = msg;
         document.body.appendChild(t);
         setTimeout(() => t.remove(), 2500);
     }
 
-    // --- GESTION MEMBRES ---
     function handleInscription() {
         const nom = document.getElementById('reg-nom').value.trim();
         const tel = document.getElementById('reg-tel').value.trim();
         const pass = document.getElementById('reg-pass').value.trim();
-        if(!nom || !tel || !pass) return showToast("Remplissez tous les champs");
-        
-        db.membres.push({nom, tel, pass, historique: new Array(12).fill(false)});
+        if(!nom || !tel || !pass) return showToast("Veuillez remplir tous les champs");
+        if(db.membres.find(m => m.tel === tel)) return showToast("Ce numéro existe déjà");
+        db.membres.push({ nom, tel, pass, historique: new Array(12).fill(false) });
         save();
-        showToast("Compte créé avec succès !");
+        showToast("Compte créé !");
         showPage('page-login');
     }
 
@@ -299,18 +363,26 @@
         const tel = document.getElementById('login-tel').value.trim();
         const pass = document.getElementById('login-pass').value.trim();
         const user = db.membres.find(m => m.tel === tel && m.pass === pass);
-        
         if(user) {
             sessionUser = user;
             renderClientDashboard();
             showPage('dashboard-client');
-        } else { showToast("Téléphone ou mot de passe incorrect"); }
+        } else { showToast("Identifiants incorrects"); }
     }
 
-    // --- GESTION ADMIN ---
+    function renderClientDashboard() {
+        document.getElementById('client-welcome').innerText = "Salut, Para " + sessionUser.nom;
+        let h = `<thead><tr>${moisNoms.map(m=>`<th>${m}</th>`).join('')}</tr></thead><tbody><tr>`;
+        let hist = sessionUser.historique || new Array(12).fill(false);
+        hist.forEach(p => h += `<td class="${p?'paid-cell':'unpaid-cell'}">${p?'OK':'-'}</td>`);
+        document.getElementById('client-table-suivi').innerHTML = h + "</tr></tbody>";
+        renderMessages('client');
+    }
+
     function checkAdmin() {
         const code = document.getElementById('admin-pass-input').value;
-        if(code === db.adminPass) {
+        const isAdmin = (code === db.adminPass) || (db.coAdmins && db.coAdmins.includes(code));
+        if(isAdmin) {
             document.getElementById('admin-pass-input').value = "";
             showPage('dashboard-admin');
         } else { showToast("Code Admin incorrect"); }
@@ -318,66 +390,6 @@
 
     function changeAdminCode() {
         const code = document.getElementById('new-admin-code').value.trim();
-        if(code.length < 4) return showToast("Le code doit avoir au moins 4 chiffres");
-        db.adminPass = code;
-        save();
-        showToast("Code Admin mis à jour !");
-        document.getElementById('new-admin-code').value = "";
-    }
-
-    function addCoAdmin() {
-        const tel = document.getElementById('new-admin-tel').value.trim();
-        if(tel) {
-            if(!db.coAdmins) db.coAdmins = [];
-            db.coAdmins.push(tel);
-            save();
-            showToast("Co-Admin ajouté avec succès");
-            document.getElementById('new-admin-tel').value = "";
-        }
-    }
-
-    function updateSolde() {
-        let totalEntrees = 0;
-        db.membres.forEach(m => {
-            if(m.historique) m.historique.forEach(p => { if(p) totalEntrees += 3000; });
-        });
-        let totalSorties = db.mouvements.reduce((s, m) => s + Number(m.montant), 0);
-        const el = document.getElementById('admin-solde-caisse');
-        if(el) el.innerText = (totalEntrees - totalSorties).toLocaleString() + " FCFA";
-    }
-
-    function ajouterMouvement() {
-        const type = document.getElementById('mov-type').value;
-        const motif = document.getElementById('mov-motif').value;
-        const montant = document.getElementById('mov-montant').value;
-        if(!motif || !montant) return showToast("Champs vides");
-        
-        db.mouvements.push({type, motif, montant, date: new Date().toLocaleDateString()});
-        save();
-        renderMouvements();
-        showToast("Mouvement enregistré");
-        document.getElementById('mov-motif').value = "";
-        document.getElementById('mov-montant').value = "";
-    }
-
-    function renderMouvements() {
-        const histDiv = document.getElementById('hist-mouvements');
-        if(!db.mouvements || db.mouvements.length === 0) { histDiv.innerHTML = "Aucun historique"; return; }
-        histDiv.innerHTML = db.mouvements.map(m => `<div style="border-bottom:1px solid #ddd; padding:8px;"><strong>[${m.date}]</strong> ${m.motif} : <span style="color:red">-${m.montant} FCFA</span></div>`).reverse().join('');
-    }
-
-    function renderSuiviAnnuel() {
-        const table = document.getElementById('table-annuelle');
-        let h = `<thead><tr><th>Nom</th>${moisNoms.map(m=>`<th>${m}</th>`).join('')}</tr></thead><tbody>`;
-        db.membres.forEach((m, i) => {
-            h += `<tr><td style="text-align:left"><b>${m.nom}</b></td>`;
-            let hist = m.historique || new Array(12).fill(false);
-            hist.forEach((p, mi) => h += `<td class="${p?'paid-cell':'unpaid-cell'}" onclick="toggleCotis(${i},${mi})">${p?'OK':'DÛ'}</td>`);
-            h += `</tr>`;
-        });
-        table.innerHTML = h + "</tbody>";
-    }
-
-    function toggleCotis(mI, miI) {
-        if(!db.membres[mI].historique) db.membres[mI].historique = new Array(12).fill(false);
-        db.membres[mI].historique[miI] = !db.membres[mI].historique[mi
+        if(code.length < 4) return showToast("Code trop court");
+        db.adminPass = code; save(); 
+        showToast("Code principal mis à 
