@@ -16,46 +16,47 @@
         #particles-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
         
         header { position: relative; z-index: 10; background: linear-gradient(135deg, rgba(27, 94, 32, 0.95), rgba(10, 46, 10, 0.95)); color: white; text-align: center; padding: 25px 20px; border-bottom: 4px solid var(--or); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
-        .app-icon { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--or); object-fit: cover; background-color: var(--blanc); }
+        .app-icon { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--or); object-fit: cover; background-color: var(--blanc); }
         
-        .container { position: relative; z-index: 10; padding: 20px; max-width: 900px; margin: auto; }
-        .page { display: none; animation: fadeInUp 0.5s ease; }
+        .container { position: relative; z-index: 10; padding: 15px; max-width: 900px; margin: auto; }
+        .page { display: none; animation: fadeInUp 0.4s ease; }
         .active { display: block; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
-        .card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); margin-bottom: 20px; }
-        .btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-weight: bold; cursor: pointer; font-size: 15px; margin-top: 12px; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .card { background: rgba(255, 255, 255, 0.98); padding: 20px; border-radius: 18px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); margin-bottom: 20px; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 14px; margin-top: 10px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-mil { background: linear-gradient(135deg, var(--militaire), var(--militaire-dark)); color: white; }
         .btn-dark { background: #333; color: white; }
         .btn-danger { background: var(--rouge); color: white; }
         .btn-or { background: var(--or); color: var(--militaire-dark); }
         
-        input, select, textarea { width: 100%; padding: 14px; margin: 10px 0; border: 2px solid #e0e0e0; border-radius: 12px; outline: none; font-size: 16px; }
-        .table-scroll { overflow-x: auto; border-radius: 12px; margin-top: 15px; }
-        table { width: 100%; border-collapse: collapse; background: white; min-width: 700px; }
-        th, td { border: 1px solid #eee; padding: 12px; text-align: center; font-size: 0.85em; }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #e0e0e0; border-radius: 10px; outline: none; }
+        .table-scroll { overflow-x: auto; border-radius: 10px; margin-top: 10px; border: 1px solid #ddd; }
+        table { width: 100%; border-collapse: collapse; background: white; min-width: 750px; }
+        th, td { border: 1px solid #eee; padding: 10px; text-align: center; font-size: 0.8em; }
         th { background: var(--militaire); color: white; }
         
         .paid-cell { background: #c8e6c9 !important; color: #1b5e20; font-weight: bold; cursor: pointer; }
         .unpaid-cell { color: #b71c1c; cursor: pointer; font-weight: bold; background: #ffebee; }
-        .delete-btn { color: var(--rouge); cursor: pointer; font-size: 1.2em; transition: 0.2s; }
-        .delete-btn:hover { transform: scale(1.2); }
-        
-        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
-        .grid-item { background: white; padding: 20px; text-align: center; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .grid-item i { font-size: 1.5em; color: var(--militaire); margin-bottom: 8px; display: block; }
-        
-        /* Notifications clignotantes */
-        @keyframes flash { 0% { opacity: 1; background: var(--rouge); } 50% { opacity: 0.5; background: #ff5252; } 100% { opacity: 1; background: var(--rouge); } }
-        .notif-badge { padding: 2px 8px; border-radius: 10px; color: white; font-size: 10px; font-weight: bold; margin-left: 10px; animation: flash 1s infinite; }
+        .delete-btn { background: #fee; color: var(--rouge); padding: 8px; border-radius: 8px; cursor: pointer; border: 1px solid #fcc; }
 
-        .messenger-body { height: 300px; overflow-y: auto; background: #f0f2f5; padding: 15px; border-radius: 10px; display: flex; flex-direction: column; }
-        .msg { max-width: 80%; padding: 10px; border-radius: 15px; margin-bottom: 10px; font-size: 0.9em; position: relative; }
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+        .grid-item { background: white; padding: 15px; text-align: center; border-radius: 12px; cursor: pointer; border: 1px solid #eee; }
+        .grid-item i { font-size: 1.4em; color: var(--militaire); margin-bottom: 5px; display: block; }
+        
+        .stat-box { background: #f8f9fa; padding: 15px; border-radius: 12px; border-left: 4px solid var(--militaire); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .stat-val { font-weight: 900; font-size: 1.2em; color: var(--militaire-dark); }
+
+        @keyframes flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .notif-badge { background: var(--rouge); color: white; padding: 2px 6px; border-radius: 10px; font-size: 9px; animation: flash 1s infinite; }
+
+        .messenger-body { height: 280px; overflow-y: auto; background: #f0f2f5; padding: 12px; border-radius: 10px; display: flex; flex-direction: column; }
+        .msg { max-width: 80%; padding: 10px; border-radius: 15px; margin-bottom: 8px; font-size: 0.9em; }
         .msg-sent { align-self: flex-end; background: var(--militaire); color: white; }
         .msg-received { align-self: flex-start; background: #e4e6eb; color: black; }
         
-        .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); padding: 15px 25px; background: #333; color: white; border-radius: 30px; z-index: 10000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        footer { position: fixed; bottom: 0; width: 100%; background: #000; color: #fff; text-align: center; padding: 15px; font-size: 0.8em; z-index: 100; border-top: 1px solid var(--or); }
+        .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); padding: 12px 25px; background: #333; color: white; border-radius: 25px; z-index: 10000; font-size: 13px; }
+        footer { position: fixed; bottom: 0; width: 100%; background: #000; color: #fff; text-align: center; padding: 12px; font-size: 0.75em; z-index: 100; border-top: 1px solid var(--or); }
     </style>
 </head>
 <body>
@@ -64,27 +65,27 @@
 
 <header>
     <img src="1000058278.png" class="app-icon" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1069/1069102.png'">
-    <div style="font-weight:900; margin-top:10px; font-size: 1.2em;">MUTUELLE LES PARAS COMMANDOS</div>
-    <div style="font-size:10px; color:var(--or); letter-spacing: 2px;">FIDÉLITÉ - HONNEUR - SOLIDARITÉ</div>
+    <div style="font-weight:900; margin-top:8px; font-size: 1.1em;">MUTUELLE LES PARAS COMMANDOS</div>
+    <div style="font-size:9px; color:var(--or); letter-spacing: 2px;">FIDÉLITÉ - HONNEUR - SOLIDARITÉ</div>
 </header>
 
 <div class="container">
     <div id="home" class="page active">
         <div class="card" style="text-align: center;">
             <i class="fas fa-parachute-box" style="font-size: 3em; color: var(--militaire);"></i>
-            <h2>Espace Membre</h2>
+            <h2>Bienvenue</h2>
             <button class="btn btn-mil" onclick="showPage('page-login')"><i class="fas fa-sign-in-alt"></i> CONNEXION</button>
             <button class="btn btn-dark" onclick="showPage('page-inscription')"><i class="fas fa-user-plus"></i> INSCRIPTION</button>
             <button class="btn btn-or" onclick="showPage('page-reglement')"><i class="fas fa-book"></i> RÈGLEMENT</button>
-            <hr style="margin: 20px 0; opacity: 0.2;">
-            <button class="btn" style="color:var(--rouge); background: #ffeeee; border: 1px solid var(--rouge);" onclick="showPage('login-admin')"><i class="fas fa-lock"></i> ACCÈS ADMIN</button>
+            <hr style="margin: 20px 0; opacity: 0.1;">
+            <button class="btn" style="color:var(--rouge); background: #ffeeee;" onclick="showPage('login-admin')"><i class="fas fa-lock"></i> ADMINISTRATION</button>
         </div>
     </div>
 
     <div id="page-reglement" class="page">
         <div class="card">
-            <h3><i class="fas fa-gavel"></i> Règlement Intérieur</h3>
-            <div id="display-reglement" style="max-height: 350px; overflow-y: auto; font-size: 14px; white-space: pre-wrap; line-height: 1.6; padding: 10px; background: #f9f9f9; border-radius: 10px;"></div>
+            <h3>Règlement Intérieur</h3>
+            <div id="display-reglement" style="max-height: 350px; overflow-y: auto; font-size: 14px; white-space: pre-wrap; line-height: 1.5; padding: 10px; background: #fdfdfd; border: 1px solid #eee; border-radius: 10px;"></div>
             <button class="btn btn-dark" onclick="showPage('home')">RETOUR</button>
         </div>
     </div>
@@ -93,38 +94,38 @@
         <div class="card">
             <h3>Nouveau Membre</h3>
             <input type="text" id="reg-nom" placeholder="Nom Complet">
-            <input type="tel" id="reg-tel" placeholder="N° Téléphone">
+            <input type="tel" id="reg-tel" placeholder="Numéro de Téléphone">
             <input type="password" id="reg-pass" placeholder="Mot de passe">
-            <button class="btn btn-mil" onclick="handleInscription()">VALIDER</button>
+            <button class="btn btn-mil" onclick="handleInscription()">CRÉER MON COMPTE</button>
             <button class="btn btn-dark" onclick="showPage('home')">RETOUR</button>
         </div>
     </div>
 
     <div id="page-login" class="page">
         <div class="card">
-            <h3>Connexion Membre</h3>
+            <h3>Accès Membre</h3>
             <input type="tel" id="login-tel" placeholder="Téléphone">
             <input type="password" id="login-pass" placeholder="Mot de passe">
-            <button class="btn btn-mil" onclick="handleLogin()">ENTRER</button>
+            <button class="btn btn-mil" onclick="handleLogin()">SE CONNECTER</button>
             <button class="btn btn-dark" onclick="showPage('home')">RETOUR</button>
         </div>
     </div>
 
     <div id="dashboard-client" class="page">
         <div class="card" style="background: var(--militaire); color: white;">
-            <h2 id="client-welcome"></h2>
-            <p>Année 2026</p>
+            <h2 id="client-welcome" style="margin:0"></h2>
+            <p style="opacity: 0.8; font-size: 13px;">Année budgétaire 2026</p>
         </div>
         <div class="card">
             <h4><i class="fas fa-calendar-check"></i> Mes Cotisations (3000 FCFA/mois)</h4>
             <div class="table-scroll"><table id="client-table-suivi"></table></div>
         </div>
         <div class="card">
-            <h4><i class="fas fa-comments"></i> Messagerie Admin</h4>
+            <h4><i class="fas fa-envelope"></i> Messagerie Admin</h4>
             <div class="messenger-body" id="client-messenger-body"></div>
             <div style="display:flex; gap:5px; margin-top:10px;">
-                <input type="text" id="client-msg-input" placeholder="Message..." style="margin:0">
-                <button class="btn btn-mil" style="width:60px; margin:0" onclick="sendMessage('client')"><i class="fas fa-paper-plane"></i></button>
+                <input type="text" id="client-msg-input" placeholder="Ecrire..." style="margin:0">
+                <button class="btn btn-mil" style="width:50px; margin:0" onclick="sendMessage('client')"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
         <button class="btn btn-danger" onclick="logout()">DÉCONNEXION</button>
@@ -132,8 +133,8 @@
 
     <div id="login-admin" class="page">
         <div class="card">
-            <h3><i class="fas fa-shield-alt"></i> Code Admin</h3>
-            <input type="password" id="admin-pass-input" placeholder="Code Secret">
+            <h3>Portail Administratif</h3>
+            <input type="password" id="admin-pass-input" placeholder="Code Secret Admin">
             <button class="btn btn-mil" onclick="checkAdmin()">DÉVERROUILLER</button>
             <button class="btn btn-dark" onclick="showPage('home')">RETOUR</button>
         </div>
@@ -141,50 +142,77 @@
 
     <div id="dashboard-admin" class="page">
         <div class="card" style="background: #0a2e0a; color: var(--or); text-align: center; border: 2px solid var(--or);">
-            <p style="margin:0;">SOLDE ACTUEL EN CAISSE</p>
-            <h1 id="admin-solde-caisse">0 FCFA</h1>
+            <p style="margin:0; font-size: 12px;">SOLDE ACTUEL EN CAISSE</p>
+            <h1 id="admin-solde-caisse" style="margin:5px 0">0 FCFA</h1>
         </div>
         <div class="admin-grid">
-            <div class="grid-item" onclick="showPage('admin-suivi-annuel'); renderSuiviAnnuel();"><i class="fas fa-table"></i>REGISTRE</div>
-            <div class="grid-item" onclick="showPage('admin-mouvements'); renderMouvements();"><i class="fas fa-exchange-alt"></i>DEPENSES</div>
+            <div class="grid-item" onclick="showPage('admin-suivi-annuel'); renderSuiviAnnuel();"><i class="fas fa-users-cog"></i>REGISTRE</div>
+            <div class="grid-item" onclick="showPage('admin-stats'); updateStats();"><i class="fas fa-chart-line"></i>FINANCES</div>
+            <div class="grid-item" onclick="showPage('admin-mouvements'); renderMouvements();"><i class="fas fa-minus-circle"></i>SORTIES</div>
             <div class="grid-item" onclick="showPage('admin-boite'); renderAdminMessages();"><i class="fas fa-envelope"></i>MESSAGES</div>
-            <div class="grid-item" onclick="showPage('admin-settings');"><i class="fas fa-cog"></i>PARAMS</div>
-            <div class="grid-item" onclick="exporterDonnees()"><i class="fas fa-save"></i>EXPORT</div>
+            <div class="grid-item" onclick="showPage('admin-settings');"><i class="fas fa-tools"></i>PARAMS</div>
             <div class="grid-item" onclick="logout()" style="color:var(--rouge)"><i class="fas fa-power-off"></i>QUITTER</div>
+        </div>
+    </div>
+
+    <div id="admin-stats" class="page">
+        <div class="card">
+            <h3><i class="fas fa-university"></i> État de la Trésorerie</h3>
+            <div class="stat-box">
+                <span>Total Recettes (Cotisations)</span>
+                <span class="stat-val" id="stat-recettes" style="color:#2e7d32">+ 0 FCFA</span>
+            </div>
+            <div class="stat-box">
+                <span>Total Dépenses (Mouvements)</span>
+                <span class="stat-val" id="stat-depenses" style="color:var(--rouge)">- 0 FCFA</span>
+            </div>
+            <div class="stat-box" style="background: var(--militaire-dark); color: white;">
+                <span>Solde Net Disponible</span>
+                <span class="stat-val" id="stat-net" style="color:var(--or)">0 FCFA</span>
+            </div>
+            <button class="btn btn-dark" onclick="showPage('dashboard-admin')">RETOUR</button>
         </div>
     </div>
 
     <div id="admin-suivi-annuel" class="page">
         <div class="card">
-            <h3>Registre Général 2026</h3>
+            <h3>Registre & Modération</h3>
+            <div style="background: #e8f5e9; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #c8e6c9;">
+                <h4 style="margin:0 0 10px 0;"><i class="fas fa-user-plus"></i> Inscrire un membre</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <input type="text" id="admin-add-nom" placeholder="Nom Complet" style="margin:0">
+                    <input type="tel" id="admin-add-tel" placeholder="Téléphone" style="margin:0">
+                </div>
+                <input type="password" id="admin-add-pass" placeholder="Mot de passe provisoire">
+                <button class="btn btn-mil" onclick="adminAddMember()">AJOUTER AU RÉGISTRE</button>
+            </div>
             <div class="table-scroll"><table id="table-annuelle"></table></div>
-            <button class="btn btn-dark" onclick="showPage('dashboard-admin')">RETOUR</button>
+            <button class="btn btn-dark" onclick="showPage('dashboard-admin')" style="margin-top:15px;">RETOUR</button>
         </div>
     </div>
 
     <div id="admin-mouvements" class="page">
         <div class="card">
-            <h3>Nouveau Mouvement</h3>
+            <h3>Enregistrer une Sortie</h3>
             <select id="mov-type">
-                <option value="Dépense">Dépense Fonctionnement</option>
-                <option value="Aide">Aide Sociale</option>
-                <option value="Prêt">Prêt accordé</option>
+                <option value="Fonctionnement">Dépense Fonctionnement</option>
+                <option value="Social">Aide Sociale</option>
+                <option value="Prêt">Prêt / Emprunt</option>
             </select>
-            <input type="text" id="mov-motif" placeholder="Motif / Bénéficiaire">
-            <input type="number" id="mov-montant" placeholder="Montant FCFA">
-            <button class="btn btn-mil" onclick="ajouterMouvement()">ENREGISTRER</button>
+            <input type="text" id="mov-motif" placeholder="Motif ou Bénéficiaire">
+            <input type="number" id="mov-montant" placeholder="Montant en FCFA">
+            <button class="btn btn-mil" onclick="ajouterMouvement()">VALIDER LA DÉPENSE</button>
         </div>
         <div class="card">
-            <h4>Historique</h4>
-            <div id="hist-mouvements"></div>
+            <h4>Historique des Sorties</h4>
+            <div id="hist-mouvements" style="font-size: 13px;"></div>
         </div>
         <button class="btn btn-dark" onclick="showPage('dashboard-admin')">RETOUR</button>
     </div>
 
     <div id="admin-boite" class="page">
         <div class="card">
-            <h3><i class="fas fa-inbox"></i> Boîte de Réception</h3>
-            <p style="font-size: 12px; color: #666;">Les noms avec <span class="notif-badge" style="animation:none">NEW</span> ont de nouveaux messages.</p>
+            <h3>Centre de Messages</h3>
             <select id="admin-select-client" onchange="renderMessages('admin')"></select>
             <div class="messenger-body" id="admin-messenger-body" style="margin-top:10px;"></div>
             <div style="display:flex; gap:5px; margin-top:10px;">
@@ -198,14 +226,14 @@
     <div id="admin-settings" class="page">
         <div class="card">
             <h3>Configuration</h3>
-            <label>Nouveau Code Admin Principal</label>
-            <input type="password" id="new-admin-code" placeholder="4 chiffres">
+            <label style="font-weight:bold; font-size:12px;">SÉCURITÉ</label>
+            <input type="password" id="new-admin-code" placeholder="Nouveau Code Admin">
             <button class="btn btn-danger" onclick="changeAdminCode()">CHANGER LE CODE</button>
             <hr>
-            <label>Modifier le Règlement Intérieur</label>
-            <textarea id="edit-reglement-text" rows="5"></textarea>
-            <button class="btn btn-or" onclick="saveReglement()">SAUVEGARDER LE RÈGLEMENT</button>
-            <button class="btn btn-dark" onclick="showPage('dashboard-admin')">RETOUR</button>
+            <label style="font-weight:bold; font-size:12px;">ÉDITION DU RÈGLEMENT</label>
+            <textarea id="edit-reglement-text" rows="6"></textarea>
+            <button class="btn btn-or" onclick="saveReglement()">METTRE À JOUR LE TEXTE</button>
+            <button class="btn btn-dark" onclick="showPage('dashboard-admin')" style="margin-top:20px;">RETOUR</button>
         </div>
     </div>
 </div>
@@ -213,20 +241,22 @@
 <footer>DÉVELOPPÉ PAR OLINGOU OBORA ET SOUEKOLO EUDMAR DELBRIAN © 2026</footer>
 
 <script>
+    // Configuration Firebase
     const firebaseConfig = { databaseURL: "https://mutuelle-para-commando-default-rtdb.firebaseio.com/" };
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
-    let db = { membres: [], mouvements: [], messages: [], adminPass: "1234", reglement: "Règlement par défaut..." };
+    let db = { membres: [], mouvements: [], messages: [], adminPass: "1234", reglement: "Article 1: Solidarité..." };
     let sessionUser = null;
     const moisNoms = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Août", "Sep", "Oct", "Nov", "Déc"];
 
+    // Synchronisation Temps Réel
     database.ref('mutuelle_db').on('value', (snap) => {
         const data = snap.val();
         if (data) {
             db = { ...db, ...data };
             if(!db.membres) db.membres = [];
-            if(!db.messages) db.messages = [];
+            if(!db.mouvements) db.mouvements = [];
             
             document.getElementById('display-reglement').innerText = db.reglement;
             document.getElementById('edit-reglement-text').value = db.reglement;
@@ -238,6 +268,7 @@
             }
             if(document.getElementById('admin-suivi-annuel').classList.contains('active')) renderSuiviAnnuel();
             if(document.getElementById('admin-boite').classList.contains('active')) renderAdminMessages();
+            if(document.getElementById('admin-stats').classList.contains('active')) updateStats();
             updateSolde();
         }
     });
@@ -247,6 +278,7 @@
     function showPage(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
+        window.scrollTo(0,0);
     }
 
     function showToast(msg) {
@@ -256,14 +288,15 @@
         setTimeout(() => t.remove(), 2500);
     }
 
-    // --- AUTH ---
+    // --- LOGIQUE AUTH ---
     function handleInscription() {
         const nom = document.getElementById('reg-nom').value.trim();
         const tel = document.getElementById('reg-tel').value.trim();
         const pass = document.getElementById('reg-pass').value.trim();
         if(!nom || !tel || !pass) return showToast("Veuillez remplir tous les champs");
+        if(db.membres.find(m => m.tel === tel)) return showToast("Ce numéro est déjà inscrit");
         db.membres.push({nom, tel, pass, historique: new Array(12).fill(false)});
-        save(); showToast("Compte créé !"); showPage('page-login');
+        save(); showToast("Inscription réussie !"); showPage('page-login');
     }
 
     function handleLogin() {
@@ -271,101 +304,40 @@
         const pass = document.getElementById('login-pass').value.trim();
         const user = db.membres.find(m => m.tel === tel && m.pass === pass);
         if(user) { sessionUser = user; renderClientDashboard(); showPage('dashboard-client'); } 
-        else showToast("Identifiants incorrects");
+        else showToast("Compte introuvable");
     }
 
     function checkAdmin() {
         if(document.getElementById('admin-pass-input').value === db.adminPass) {
             showPage('dashboard-admin'); updateSolde();
-        } else showToast("Code erroné");
+        } else showToast("Accès refusé");
     }
 
     function logout() { sessionUser = null; showPage('home'); }
 
-    // --- FONCTIONS ADMIN ---
+    // --- GESTION FINANCIERE ---
     function updateSolde() {
-        let inCaisse = 0;
-        db.membres.forEach(m => m.historique.forEach(p => { if(p) inCaisse += 3000; }));
-        let outCaisse = db.mouvements ? db.mouvements.reduce((s, m) => s + Number(m.montant), 0) : 0;
-        document.getElementById('admin-solde-caisse').innerText = (inCaisse - outCaisse).toLocaleString() + " FCFA";
+        let totalRecolte = 0;
+        db.membres.forEach(m => m.historique.forEach(p => { if(p) totalRecolte += 3000; }));
+        let totalSorties = db.mouvements.reduce((s, m) => s + Number(m.montant), 0);
+        document.getElementById('admin-solde-caisse').innerText = (totalRecolte - totalSorties).toLocaleString() + " FCFA";
     }
 
+    function updateStats() {
+        let totalRecolte = 0;
+        db.membres.forEach(m => m.historique.forEach(p => { if(p) totalRecolte += 3000; }));
+        let totalSorties = db.mouvements.reduce((s, m) => s + Number(m.montant), 0);
+        
+        document.getElementById('stat-recettes').innerText = "+ " + totalRecolte.toLocaleString() + " FCFA";
+        document.getElementById('stat-depenses').innerText = "- " + totalSorties.toLocaleString() + " FCFA";
+        document.getElementById('stat-net').innerText = (totalRecolte - totalSorties).toLocaleString() + " FCFA";
+    }
+
+    // --- REGISTRE & MODERATION ---
     function renderSuiviAnnuel() {
         const table = document.getElementById('table-annuelle');
-        let h = `<thead><tr><th>Action</th><th>Nom</th>${moisNoms.map(m=>`<th>${m}</th>`).join('')}</tr></thead><tbody>`;
+        let h = `<thead><tr><th>Action</th><th>Membre</th>${moisNoms.map(m=>`<th>${m}</th>`).join('')}</tr></thead><tbody>`;
         db.membres.forEach((m, i) => {
             h += `<tr>
-                <td><i class="fas fa-trash-alt delete-btn" onclick="deleteMembre(${i})"></i></td>
-                <td style="text-align:left"><b>${m.nom}</b></td>`;
-            m.historique.forEach((p, mi) => h += `<td class="${p?'paid-cell':'unpaid-cell'}" onclick="toggleCotis(${i},${mi})">${p?'OK':'DÛ'}</td>`);
-            h += `</tr>`;
-        });
-        table.innerHTML = h + "</tbody>";
-    }
-
-    function deleteMembre(index) {
-        if(confirm("Voulez-vous vraiment retirer " + db.membres[index].nom + " de la mutuelle ?")) {
-            db.membres.splice(index, 1);
-            save();
-            showToast("Membre retiré");
-        }
-    }
-
-    function toggleCotis(mI, miI) {
-        db.membres[mI].historique[miI] = !db.membres[mI].historique[miI];
-        save();
-    }
-
-    // --- MESSAGERIE AVANCÉE ---
-    function renderAdminMessages() {
-        const sel = document.getElementById('admin-select-client');
-        const current = sel.value;
-        sel.innerHTML = "";
-        
-        db.membres.forEach(m => {
-            // Vérifier s'il y a des messages non répondus de ce membre
-            const hasNew = db.messages.some(msg => msg.sender === m.tel && msg.receiver === 'admin');
-            const opt = document.createElement('option');
-            opt.value = m.tel;
-            opt.innerHTML = m.nom + (hasNew ? " (NOUVEAU MESSAGE)" : "");
-            sel.appendChild(opt);
-        });
-        
-        if(current) sel.value = current;
-        renderMessages('admin');
-    }
-
-    function sendMessage(who) {
-        const input = document.getElementById(who + '-msg-input');
-        const text = input.value.trim();
-        if(!text) return;
-        
-        if(!db.messages) db.messages = [];
-        db.messages.push({
-            sender: who === 'admin' ? 'admin' : sessionUser.tel,
-            receiver: who === 'admin' ? document.getElementById('admin-select-client').value : 'admin',
-            text: text,
-            date: new Date().toISOString()
-        });
-        save();
-        input.value = '';
-        renderMessages(who);
-    }
-
-    function renderMessages(who) {
-        const body = document.getElementById(who + '-messenger-body');
-        const myId = who === 'admin' ? 'admin' : sessionUser.tel;
-        const otherId = who === 'admin' ? document.getElementById('admin-select-client').value : 'admin';
-        
-        if(!db.messages) { body.innerHTML = ""; return; }
-        
-        const fil = db.messages.filter(m => (m.sender === myId && m.receiver === otherId) || (m.sender === otherId && m.receiver === myId));
-        
-        // Si admin regarde, on peut considérer les messages comme "lus" (optionnel ici pour rester simple)
-        
-        body.innerHTML = fil.map(m => `
-            <div class="msg ${m.sender === myId ? 'msg-sent' : 'msg-received'}">
-                ${m.sender === otherId ? '<span class="notif-badge">NEW</span><br>' : ''}
-                ${m.text}
-            </div>`).join('');
-   
+                <td><button class="delete-btn" onclick="deleteMembre(${i})"><i class="fas fa-user-minus"></i></button></td>
+                <td style="text-align:left"><b>${m.no
