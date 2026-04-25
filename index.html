@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUTUELLE LES PARAS COMMANDOS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <style>
+        :root { 
+            --militaire: #1b5e20; 
+            --militaire-dark: #0a2e0a;
+            --rouge: #b71c1c; 
+            --or: #ffd700; 
+            --blanc: #ffffff; 
+        }
+        
+        * { box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding-bottom: 80px;
+            overflow-x: hidden;
+        }
+
+        #particles-canvas {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+        
+        header { 
+            position: relative; z-index: 10;
+            background: linear-gradient(135deg, rgba(27, 94, 32, 0.95), rgba(10, 46, 10, 0.95));
+            color: white; text-align: center; padding: 25px 20px; 
+            border-bottom: 4px solid var(--or); box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        
+        .app-icon { 
+            width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--or);
+            object-fit: cover; background-color: var(--blanc);
+        }
+        
+        .container { position: relative; z-index: 10; padding: 20px; max-width: 800px; margin: auto; }
+        
+        .page { display: none; animation: fadeInUp 0.5s ease; }
+        .active { display: block; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card { 
+            background: rgba(255, 255, 255, 0.95); padding: 25px; 
+            border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); 
+            margin-bottom: 20px;
+        }
+
+        .btn { 
+            width: 100%; padding: 16px; border: none; border-radius: 14px; 
+            font-weight: bold; cursor: pointer; font-size: 15px; margin-top: 12px; 
+            transition: all 0.3s;
+        }
+        .btn-mil { background: linear-gradient(135deg, var(--militaire), var(--militaire-dark)); color: white; }
+        .btn-dark { background: #333; color: white; }
+        .btn-danger { background: var(--rouge); color: white; }
+        
+        input, select { 
+            width: 100%; padding: 14px; margin: 10px 0; 
+            border: 2px solid #e0e0e0; border-radius: 12px; outline: none;
+        }
+        
+        .table-scroll { overflow-x: auto; border-radius: 12px; margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; background: white; min-width: 600px; }
+        th, td { border: 1px solid #eee; padding: 12px; text-align: center; font-size: 0.85em; }
+        th { background: var(--militaire); color: white; }
+        
+        .paid-cell { background: #c8e6c9 !important; color: #1b5e20; font-weight: bold; cursor: pointer; }
+        .unpaid-cell { color: #b71c1c; cursor: pointer; font-weight: bold; background: #ffebee; }
+
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+        .grid-item { 
+            background: white; padding: 20px; text-align: center; border-radius: 12px; 
+            cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .grid-item i { font-size: 1.5em; color: var(--militaire); margin-bottom: 8px; display: block; }
+
+        .messenger-body { height: 250px; overflow-y: auto; background: #f0f2f5; padding: 15px; border-radius: 10px; display: flex; flex-direction: column; }
+        .msg { max-width: 80%; padding: 10px; border-radius: 15px; margin-bottom: 10px; font-size: 0.9em; }
+        .msg-sent { align-self: flex-end; background: var(--militaire); color: white; }
+        .msg-received { align-self: flex-start; background: #e4e6eb; color: black; }
+
+        .toast {
+            position: fixed; top: 20px; right: 20px; padding: 15px 25px; 
+            background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 10000; border-left: 5px solid var(--militaire);
+        }
+
+        footer { 
+            position: fixed; bottom: 0; width: 100%; background: #000; 
+            color: #fff; text-align: center; padding: 15px; font-size: 0.8em; z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="particles-canvas"></canvas>
+
+<header>
+    <img src="1000058278.png" class="app-icon" alt="Logo">
+    <div style="font-weight:900; margin-top:10px; font-size: 1.2em;">MUTUELLE LES PARAS COMMANDOS</div>
+    <div style="font-size:10px; color:var(--or); letter-spacing: 2px;">FIDÉLITÉ - HONNEUR - SOLIDARITÉ</div>
+</header>
+
+<div class="container">
+    <div id="home" class="page active">
+        <div class="card" style="text-align: center;">
+            <i class="fas fa-parachute-box" style="font-size: 3em; color: var(--militaire);"></i>
+            <h2>Espace Membre</h2>
+            <button class="btn btn-mil" onclick="showPage('page-login')">CONNEXION</button>
+            <button class="btn btn-dark" onclick="showPage('page-inscription')">INSCRIPTION</button>
+            <hr style="margin: 20px 0; opacity: 0.2;">
+            <button class="btn" style="color:var(--rouge); background: #ffeeee; border: 1px solid var(--rouge);" onclick="showPage('login-admin')">ACCÈS ADMIN</button>
+        </div>
+    </div>
+
+    <div id="page-inscription" class="page">
+        <div class="card">
+            <h3>Nouveau Membre</h3>
+            <input type="text" id="reg-nom" placeholder="Nom Complet">
+            <input type="tel" id="reg-tel" placeholder="N° Téléphone (9 chiffres)">
+            <input type="password" id="reg-pass" placeholder="Mot de passe">
+            <button class="btn btn-mil" onclick="handleInscription()">VALIDER</button>
+            <button class="btn btn-dark" onclick="showPage('home')">RETOUR</button>
+        </div>
+    </div>
+
+    <div id="page-login" class="page">
+        <div class="card">
+            <h3>Connexion Membre</h3>
+            <input type="tel" id="login-tel" placeholder="Téléphone">
+            <input type="password" id="login-pass" placeholder="Mot de passe">
+            <button class="btn btn-mil" onclick="handleLogin()">ENTRER</button>
+            <button class="btn btn-dark" onclick="showPage('home')">RETOUR</button>
+        </div>
+    </div>
+
+    <div id="dashboard-client" class="page">
+        <div class="card" style="background: var(--militaire); color: white;">
+            <h2 id="client-welcome"></h2>
+            <p>Année 2026</p>
+        </div>
+        <div class="card">
+            <h4><i class="fas fa-calendar-check"></i> Mes Cotisations (3000 FCFA/mois)</h4>
+            <div class="table-scroll"><table id="client-table-suivi"></table></div>
+        </div>
+        <div class="card">
+            <h4><i class="fas fa-comments"></i> Messagerie Admin</h4>
+            <div class="messenger-body" id="client-messenger-body"></div>
+            <div style="display:flex; gap:5px; margin-top:10px;">
+                <input type="text" id="client-msg-input" placeholder="Message..." style="margin:0">
+                <button class="btn btn-mil" style="width:60px; margin:0" onclick="sendMessage('client')"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <button class="btn btn-danger" onclick="logout()">DÉCONNEXION</button>
+    </div>
+
+    <div id="login-admin" class="page">
+        <div class="card">
+            <h3><i class="fas fa-shield-alt"></i> Code Admin</h3>
+            <input type="password" id="admin-pass-input" placeholder="Code Secret">
+            <button class="btn btn-mil" onclick="checkAdmin()">DÉVERROUILLER</button>
+            <button class="btn btn-dark" onclick="showPage('home')">RETOUR</button>
+        </div>
+    </div>
+
+    <div id="dashboard-admin" class="page">
+        <div class="card" style="background: #0a2e0a; color: var(--or); text-align: center; border: 2px solid var(--or);">
+            <p style="margin:0;">SOLDE ACTUEL EN CAISSE</p>
+            <h1 id="admin-solde-caisse">0 FCFA</h1>
+        </div>
+        <div class="admin-grid">
+            <div class="grid-item" onclick="showPage('admin-suivi-annuel'); renderSuiviAnnuel();"><i class="fas fa-table"></i>REGISTRE</div>
+            <div class="grid-item" onclick="showPage('admin-mouvements'); renderMouvements();"><i class="fas fa-exchange-alt"></i>DEPENSES</div>
+            <div class="grid-item" onclick="showPage('admin-boite'); renderAdminMessages();"><i class="fas fa-envelope"></i>MESSAGES</div>
+            <div class="grid-item" onclick="exporterDonnees()"><i class="fas fa-save"></i>EXPORT</div>
+            <div class="grid-item" onclick="logout()" style="color:var(--rouge)"><i class="fas fa-power-off"></i>QUITTER</div>
+        </div>
+    </div>
+
+    <div id="admin-suivi-annuel" class="page">
+        <div class="card">
+            <h3>Registre Général 2026</h3>
+            <div class="table-scroll"><table id="table-annuelle"></table></div>
+            <button class="btn btn-dark" onclick="showPage('dashboard-admin')">RETOUR</button>
+        </div>
+    </div>
+
+    <div id="admin-mouvements" class="page">
+        <div class="card">
+            <h3>Nouveau Mouvement</h3>
+            <select id="mov-type">
+                <option value="depense">Dépense Fonctionnement</option>
+                <option value="aide">Aide Sociale</option>
+                <option value="emprunt">Prêt accordé</option>
+            </select>
+            <input type="text" id="mov-motif" placeholder="Motif / Bénéficiaire">
+            <input type="number" id="mov-montant" placeholder="Montant FCFA">
+            <button class="btn btn-mil" onclick="ajouterMouvement()">ENREGISTRER</button>
+        </div>
+        <div class="card">
+            <h4>Historique</h4>
+            <div id="hist-mouvements"></div>
+        </div>
+        <button class="btn btn-dark" onclick="showPage('dashboard-admin')">RETOUR</button>
+    </div>
+
+    <div id="admin-boite" class="page">
+        <div class="card">
+            <h3>Boîte de Réception</h3>
+            <select id="admin-select-client" onchange="renderAdminMessages()"></select>
+            <div class="messenger-body" id="admin-messenger-body" style="margin-top:10px;"></div>
+            <div style="display:flex; gap:5px; margin-top:10px;">
+                <input type="text" id="admin-msg-input" placeholder="Répondre..." style="margin:0">
+                <button class="btn btn-mil" style="width:60px; margin:0" onclick="sendMessage('admin')"><i class="fas fa-paper-plane"></i></button>
+            </div>
+            <button class="btn btn-dark" onclick="showPage('dashboard-admin')" style="margin-top:15px;">RETOUR</button>
+        </div>
+    </div>
+</div>
+
+<footer>DÉVELOPPÉ PAR OLINGOU OBORA ET SOUEKOLO EUDMAR DELBRIAN © 2026</footer>
+
+<script>
+    // --- CONFIGURATION FIREBASE ---
+    const firebaseConfig = {
+        databaseURL: "https://mutuelle-para-commando-default-rtdb.firebaseio.com/" 
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // --- INITIALISATION DES VARIABLES ---
+    let db = {
+        membres: [],
+        mouvements: [], 
+        messages: [],
+        adminPass: "1234" 
+    };
+
+    let sessionUser = null;
+    const moisNoms = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Août", "Sep", "Oct", "Nov", "Déc"];
+
+    // --- SYNCHRONISATION EN TEMPS RÉEL (LE CŒUR DU SYSTÈME) ---
+    database.ref('mutuelle_db').on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            db = data;
+            console.log("Données mises à jour depuis Firebase !");
+            // Rafraîchir les écrans si nécessaire
+            if(sessionUser) {
+                // On met à jour la session utilisateur locale avec les nouvelles données du cloud
+                const updatedUser = db.membres.find(m => m.tel === sessionUser.tel);
+                if(updatedUser) sessionUser = updatedUser;
+                renderClientDashboard();
+            }
+            if(document.getElementById('admin-suivi-annuel').classList.contains('active')) renderSuiviAnnuel();
+            if(document.getElementById('admin-boite').classList.contains('active')) renderAdminMessages();
+            if(document.getElementById('dashboard-admin').classList.contains('active')) updateSolde();
+        }
+    });
+
+    function save() { 
+        database.ref('mutuelle_db').set(db); 
+    }
+
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if(id === 'dashboard-admin') updateSolde();
+        window.scrollTo(0,0);
+    }
+
+    function showToast(msg) {
+        const t = document.createElement('div');
+        t.className = 'toast';
+        t.innerText = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 2500);
+    }
+
+    // --- LOGIQUE AUTHENTIFICATION ---
+    function handleInscription() {
+        const nom = document.getElementById('reg-nom').value;
+        const tel = document.getElementById('reg-tel').value;
+        const pass = document.getElementById('reg-pass').value;
+        if(!nom || tel.length < 9) return showToast("Informations invalides");
+        
+        if(!db.membres) db.membres = [];
+        db.membres.push({nom, tel, pass, historique: new Array(12).fill(false)});
+        save();
+        showToast("Compte créé !");
+        showPage('page-login');
+    }
+
+    function handleLogin() {
+        const tel = document.getElementById('login-tel').value;
+        const pass = document.getElementById('login-pass').value;
+        if(!db.membres) return showToast("Aucun membre inscrit");
+        const user = db.membres.find(m => m.tel === tel && m.pass === pass);
+        if(user) {
+            sessionUser = user;
+            renderClientDashboard();
+            showPage('dashboard-client');
+        } else { showToast("Identifiants incorrects"); }
+    }
+
+    function checkAdmin() {
+        if(document.getElementById('admin-pass-input').value === db.adminPass) {
+            document.getElementById('admin-pass-input').value = "";
+            showPage('dashboard-admin');
+        } else { showToast("Code erroné"); }
+    }
+
+    function logout() { sessionUser = null; showPage('home'); }
+
+    // --- LOGIQUE FINANCES ---
+    function updateSolde() {
+        let total = 0;
+        if(db.membres) {
+            db.membres.forEach(m => {
+                if(m.historique) m.historique.forEach(p => { if(p) total += 3000; });
+            });
+        }
+        let sorties = 0;
+        if(db.mouvements) {
+            sorties = db.mouvements.reduce((s, m) => s + Number(m.montant), 0);
+        }
+        document.getElementById('admin-solde-caisse').innerText = (total - sorties).toLocaleString() + " FCFA";
+    }
+
+    function ajouterMouvement() {
+        const type = document.getElementById('mov-type').value;
+        const motif = document.getElementById('mov-motif').value;
+        const montant = document.getElementById('mov-montant').value;
+        if(!motif || !montant) return showToast("Champs vides");
+        if(!db.mouvements) db.mouvements = [];
+        db.mouvements.push({type, motif, montant, date: new Date().toLocaleDateString()});
+        save(); renderMouvements(); updateSolde();
+        showToast("Enregistré");
+    }
+
+    function renderMouvements() {
+        if(!db.mouvements) return;
+        document.getElementById('hist-mouvements').innerHTML = db.mouvements.map(m => `
+            <div style="border-bottom:1px solid #ddd; padding:8px;">
+                <strong>[${m.type}]</strong> ${m.motif} : <span style="color:red">-${m.montant} FCFA</span>
+            </div>`).reverse().join('');
+    }
+
+    // --- LOGIQUE AFFICHAGE TABLES ---
+    function renderSuiviAnnuel() {
+        const table = document.getElementById('table-annuelle');
+        let h = `<thead><tr><th>Nom</th>${moisNoms.map(m=>`<th>${m}</th>`).join('')}</tr></thead><tbody>`;
+        if(db.membres) {
+            db.membres.forEach((m, i) => {
+                h += `<tr><td style="text-align:left"><b>${m.nom}</b></td>`;
+                m.historique.forEach((p, mi) => h += `<td class="${p?'paid-cell':'unpaid-cell'}" onclick="toggleCotis(${i},${mi})">${p?'OK':'DÛ'}</td>`);
+                h += `</tr>`;
+            });
+        }
+        table.innerHTML = h + "</tbody>";
+    }
+
+    function toggleCotis(mI, miI) {
+        db.membres[mI].historique[miI] = !db.membres[mI].historique[miI];
+        save();
+    }
+
+    function renderClientDashboard() {
+        document.getElementById('client-welcome').innerText = "Salut, Para " + sessionUser.nom;
+        let h = `<thead><tr>${moisNoms.map(m=>`<th>${m}</th>`).join('')}</tr></thead><tbody><tr>`;
+        sessionUser.historique.forEach(p => h += `<td class="${p?'paid-cell':'unpaid-cell'}">${p?'OK':'--'}</td>`);
+        document.getElementById('client-table-suivi').innerHTML = h + "</tr></tbody>";
+        renderMessages('client');
+    }
+
+    // --- LOGIQUE MESSAGERIE ---
+    function sendMessage(who) {
+        const input = document.getElementById(who + '-msg-input');
+        if(!input.value.trim()) return;
+        if(!db.messages) db.messages = [];
+        db.messages.push({
+            sender: who === 'admin' ? 'admin' : sessionUser.tel,
+            receiver: who === 'admin' ? document.getElementById('admin-select-client').value : 'admin',
+            text: input.value,
+            date: new Date().toISOString()
+        });
+        save(); input.value = '';
+    }
+
+    function renderMessages(who) {
+        if(!db.messages) return;
+        const body = document.getElementById(who + '-messenger-body');
+        const myId = who === 'admin' ? 'admin' : sessionUser.tel;
+        const otherId = who === 'admin' ? document.getElementById('admin-select-client').value : 'admin';
+        const fil = db.messages.filter(m => (m.sender === myId && m.receiver === otherId) || (m.sender === otherId && m.receiver === myId));
+        body.innerHTML = fil.map(m => `<div class="msg ${m.sender === myId ? 'msg-sent' : 'msg-received'}">${m.text}</div>`).join('');
+        body.scrollTop = body.scrollHeight;
+    }
+
+    function renderAdminMessages() {
+        const sel = document.getElementById('admin-select-client');
+        if(sel.options.length === 0 && db.membres) {
+            db.membres.forEach(m => sel.add(new Option(m.nom, m.tel)));
+        }
+        renderMessages('admin');
+    }
+
+    function exporterDonnees() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
+        const a = document.createElement('a');
+        a.setAttribute("href", dataStr);
+        a.setAttribute("download", "mutuelle_para_backup.json");
+        a.click();
+    }
+
+    // --- ANIMATION PARTICULES ---
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    let pts = [];
+    for(let i=0; i<30; i++) pts.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: Math.random()-0.5, vy: Math.random()-0.5});
+    function anim() {
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+        ctx.fillStyle = "rgba(255,215,0,0.2)";
+        pts.forEach(p => {
+            p.x += p.vx; p.y += p.vy;
+            if(p.x<0 || p.x>canvas.width) p.vx *= -1;
+            if(p.y<0 || p.y>canvas.height)
